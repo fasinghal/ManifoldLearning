@@ -80,7 +80,6 @@ y<-(a+b*cos(u))*sin(v)
 z<-b*sin(u)
 
 toroidal <- as.data.frame(cbind(x,y,z))
-
 toroidal.plot <-plot_ly(data = toroidal, x = ~x, y = ~y, z = ~z, 
                         marker = list(size = 3)) %>%
   layout(showlegend = TRUE, legend = list(size=5, orientation = 'h'))
@@ -100,3 +99,16 @@ toroidal.plot<-plot_ly(data = total, x = ~x, y = ~y, z = ~z,
                        marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
   layout(showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 toroidal.plot
+
+#-- Cloud experiment
+
+rand<- runif(n = 1000, min =-0.5, max=0.5)
+x_1<-x*rand
+y_1<-y*rand
+z_1<-z*rand
+
+toroidal_1<-as.data.frame(cbind(x_1,y_1,z_1))
+toroidal.plot_1 <-plot_ly(data = toroidal_1, x = ~x_1, y = ~y_1, z = ~z_1, 
+                        marker = list(size = 3))
+
+toroidal.plot_1
