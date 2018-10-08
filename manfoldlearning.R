@@ -67,3 +67,36 @@ S.total.plot<-plot_ly(data = S.total, x = ~x, y = ~y, z = ~z,
   layout(showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 
 S.total.plot
+
+#toroidal helix data
+
+u<-runif(n = 1000, min =0, max=2000)
+k<-0.05
+v<-u*k
+a<-3
+b<-1
+x<-(a+b*cos(u))*cos(v)
+y<-(a+b*cos(u))*sin(v)
+z<-b*sin(u)
+
+toroidal <- as.data.frame(cbind(x,y,z))
+
+toroidal.plot <-plot_ly(data = toroidal, x = ~x, y = ~y, z = ~z, 
+                        marker = list(size = 3)) %>%
+  layout(showlegend = TRUE, legend = list(size=5, orientation = 'h'))
+
+toroidal.plot
+
+toroidal$class<-factor("Original")
+toroidal.db <-DBSMOTE(X =toroidal[,-4],target = toroidal$class,dupSize = 1 )
+
+syn<-toroidal.db$syn_data
+syn$class<-NULL
+syn$class<-factor("DBSMOTE")
+
+total<- rbind(toroidal, syn)
+
+toroidal.plot<-plot_ly(data = total, x = ~x, y = ~y, z = ~z, 
+                       marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
+  layout(showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+toroidal.plot
