@@ -19,20 +19,27 @@ sls<- SLS(X =data[,-4], target=data$class, K = 5, C = 5,dupSize = 1)
 syn<-dbscan$syn_data
 syn$class<-NULL
 syn$class<-factor("DBSMOTE")
+total<-rbind(data,syn)
+total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
+  layout(title = "Swissroll Dataset Oversampling using DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
+total.plot
 
 syn<-sls$syn_data
 syn$class<-NULL
 syn$class<-factor("SLS")
+total<-rbind(data,syn)
+total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "darkturquoise")) %>%
+  layout(title = "Swissroll Dataset Oversampling using SLS",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
+total.plot
 
 syn<-smote$syn_data
 syn$class<-NULL
 syn$class<-factor("SMOTE")
-
 total<-rbind(data,syn)
-total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "darkturquoise")) %>%
-  layout(showlegend = TRUE, legend = list(size=5, orientation = 'h'))
-
+total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "indianred1")) %>%
+  layout(title = "Swissroll Dataset Oversampling using SMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
 total.plot
+
 
 
 # S shape data
