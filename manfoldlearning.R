@@ -22,7 +22,7 @@ syn$class<-NULL
 syn$class<-factor("DBSMOTE")
 total<-rbind(data,syn)
 total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
-  layout(title = "Swissroll Dataset Oversampling using DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
+  layout(title = "Swissroll Dataset + DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
 total.plot
 
 syn<-sls$syn_data
@@ -30,15 +30,15 @@ syn$class<-NULL
 syn$class<-factor("SLS")
 total<-rbind(data,syn)
 total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "darkturquoise")) %>%
-  layout(title = "Swissroll Dataset Oversampling using SLS",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
+  layout(title = "Swissroll Dataset + SLS",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
 total.plot
 
 syn<-smote$syn_data
 syn$class<-NULL
 syn$class<-factor("SMOTE")
 total<-rbind(data,syn)
-total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "indianred1")) %>%
-  layout(title = "Swissroll Dataset Oversampling using SMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
+total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "deeppink")) %>%
+  layout(title = "Swissroll Dataset + SMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
 total.plot
 
 # S shape data
@@ -53,7 +53,7 @@ z = sin(theta)* (cos(theta)-0.5)
 S.data<-as.data.frame(cbind(x,y,z))
 
 #Plot the original Data
-S.plot<-plot_ly(data = S.data, x = ~x, y = ~y, z = ~z, 
+S.plot<-plot_ly(data = S.data, x = ~z, y = ~y, z = ~x, 
   marker = list(size = 2, color='rgba(0, 0, 0, 1)'))  %>%
   layout(title = "S-Curve Dataset")      
 S.plot
@@ -69,9 +69,9 @@ syn<-S.dbscan$syn_data
 syn$class<-NULL
 syn$class<-factor("DBSMOTE")
 S.total<-rbind(S.data,syn)
-S.total.plot<-plot_ly(data = S.total, x = ~x, y = ~y, z = ~z, 
-                      marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
-  layout(title = "Swissroll Dataset Oversampling using DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+S.total.plot<-plot_ly(data = S.total, x = ~z, y = ~y, z = ~x, 
+                      marker = list(size = 3),color = ~class,colors = c("black", "firebrick1")) %>%
+  layout(title = "S Curve Dataset + DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 S.total.plot
 
 syn<-S.smote$syn_data
@@ -79,9 +79,20 @@ syn$class<-NULL
 syn$class<-factor("SMOTE")
 
 S.total<-rbind(S.data,syn)
-S.total.plot<-plot_ly(data = S.total, x = ~x, y = ~y, z = ~z, 
+S.total.plot<-plot_ly(data = S.total, x = ~z, y = ~y, z = ~x, 
                     marker = list(size = 3),color = ~class,colors = c("black", "darkturquoise")) %>%
-  layout(title = "Swissroll Dataset Oversampling using SMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+  layout(title = "S Curve Dataset + SMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+S.total.plot
+
+
+syn<-S.SLS$syn_data
+syn$class<-NULL
+syn$class<-factor("SLS")
+
+S.total<-rbind(S.data,syn)
+S.total.plot<-plot_ly(data = S.total, x = ~z, y = ~y, z = ~x, 
+                      marker = list(size = 3),color = ~class,colors = c("black", "darkolivegreen1")) %>%
+  layout(title = "S Curve Dataset + SLS",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 S.total.plot
 
 
@@ -107,7 +118,7 @@ toroidal$class<-factor("Original")
 
 toroidal.db <-DBSMOTE(X =toroidal[,-4],target = toroidal$class,dupSize = 1 )
 toroidal.smote<-SMOTE(X = toroidal[,-4], target = toroidal$class, dup_size = 1)
-
+toroidal.sls<-SLS(X = toroidal[,-4], target = toroidal$class, K = 5, C = 5,dupSize = 1)
 
 syn<-toroidal.db$syn_data
 syn$class<-NULL
@@ -115,7 +126,7 @@ syn$class<-factor("DBSMOTE")
 total<- rbind(toroidal, syn)
 toroidal.plot<-plot_ly(data = total, x = ~x, y = ~y, z = ~z, 
                        marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
-  layout(title = "Toroidal Helix, DBSMOTE oversampling" ,showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+  layout(title = "Toroidal Helix + DBSMOTE" ,showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 toroidal.plot
 
 
@@ -125,8 +136,17 @@ syn$class<-NULL
 syn$class<-factor("SMOTE")
 total<- rbind(toroidal, syn)
 toroidal.plot<-plot_ly(data = total, x = ~x, y = ~y, z = ~z, 
-                       marker = list(size = 3),color = ~class,colors = c("black", "deepskyblue")) %>%
-  layout(title = "Toroidal Helix, SMOTE oversampling" ,showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+                       marker = list(size = 3),color = ~class,colors = c("black", "darkorchid2")) %>%
+  layout(title = "Toroidal Helix + SMOTE" ,showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+toroidal.plot
+
+syn<-toroidal.sls$syn_data
+syn$class<-NULL
+syn$class<-factor("SLS")
+total<- rbind(toroidal, syn)
+toroidal.plot<-plot_ly(data = total, x = ~x, y = ~y, z = ~z, 
+                       marker = list(size = 3),color = ~class,colors = c("black", "lawngreen")) %>%
+  layout(title = "Toroidal Helix + SLS" ,showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 toroidal.plot
 
 # Manifold 2
@@ -141,8 +161,8 @@ m2.data<-as.data.frame(cbind(x,y,z))
 m2.data$class<-factor("Original")
 
 m2.plot<-plot_ly(data = m2.data, x = ~x, y = ~y, z = ~z, 
-                marker = list(size = 2, color='rgba(0, 0, 0, 1)'))  %>%
-  layout(title = "M2 Dataset")
+                marker = list(size = 2, color='rgba(0, 0, 0, 1)')) %>%
+  layout(title = "Manifold 1")
 m2.plot
 
 m2.dbscan <- DBSMOTE(X =m2.data[,-4],target = m2.data$class,dupSize = 1)
@@ -151,8 +171,8 @@ syn$class<-NULL
 syn$class<-factor("DBSMOTE")
 m2.total<-rbind(m2.data,syn)
 m2.total.plot<-plot_ly(data = m2.total, x = ~x, y = ~y, z = ~z, 
-                       marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
-  layout(title = "M2 Dataset Oversampling using DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+                       marker = list(size = 2),color = ~class,colors = c("black", "red")) %>%
+  layout(title = "Manifold 1 + DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 m2.total.plot
 
 
@@ -162,8 +182,8 @@ syn$class<-NULL
 syn$class<-factor("SMOTE")
 m2.total<-rbind(m2.data,syn)
 m2.total.plot<-plot_ly(data = m2.total, x = ~x, y = ~y, z = ~z, 
-                       marker = list(size = 3),color = ~class,colors = c("black", "dodgerblue")) %>%
-  layout(title = "M2 Dataset Oversampling using SMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+                       marker = list(size = 2),color = ~class,colors = c("black", "dodgerblue")) %>%
+  layout(title = "Manifold 1 + SMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 m2.total.plot
 
 
@@ -173,8 +193,8 @@ syn$class<-NULL
 syn$class<-factor("SLS")
 m2.total<-rbind(m2.data,syn)
 m2.total.plot<-plot_ly(data = m2.total, x = ~x, y = ~y, z = ~z, 
-                       marker = list(size = 3),color = ~class,colors = c("black", "gold")) %>%
-  layout(title = "M2 Dataset Oversampling using SLS",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+                       marker = list(size = 2),color = ~class,colors = c("black", "gold")) %>%
+  layout(title = "Manifold 1 + SLS",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 m2.total.plot
 
 #Sphere data
@@ -203,8 +223,8 @@ syn$class<-factor("DBSMOTE")
 
 sphere.total<-rbind(sphere,syn)
 sphere.os.plot<-plot_ly(data = sphere.total, x = ~x, y = ~y, z = ~z, 
-                       marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
-  layout(title = "Sphere Dataset DBSMOTE Oversampling",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+                       marker = list(size = 1),color = ~class,colors = c("black", "red")) %>%
+  layout(title = "Sphere Dataset + DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 sphere.os.plot
 
 #Lets examine the points
@@ -213,7 +233,7 @@ sqrt(x*x + y*y + z*z)
 
 #Check the synthetic points
 sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)>1)
-sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)<1)
+sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)==1)
 sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)<0.99)
 sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)
 
@@ -223,20 +243,35 @@ sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)
 sphere.smote<-SMOTE(X = sphere[,-4],target =sphere$class,K = 5,dup_size = 1)
 syn<-sphere.smote$syn_data
 syn$class<-NULL
-syn$class<-factor("DBSMOTE")
+syn$class<-factor("SMOTE")
 
 sphere.total<-rbind(sphere,syn)
 sphere.os.plot<-plot_ly(data = sphere.total, x = ~x, y = ~y, z = ~z, 
-                        marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
-  layout(title = "Sphere Dataset DBSMOTE Oversampling",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+                        marker = list(size = 1),color = ~class,colors = c("black", "lawngreen")) %>%
+  layout(title = "Sphere Dataset + SMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
 sphere.os.plot
 
 #Diagonostics
 sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)>1)
-sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)<1)
-sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)<0.999)
-
-sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)<0.98)
+sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)==1)
+sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)<0.99)
 sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)
 
+# SLS on sphere
 
+sphere.sls<-SLS(X = sphere[,-4],target =sphere$class,K = 5,C = 5,dupSize = 1)
+syn<-sphere.sls$syn_data
+syn$class<-NULL
+syn$class<-factor("SLS")
+
+sphere.total<-rbind(sphere,syn)
+sphere.os.plot<-plot_ly(data = sphere.total, x = ~x, y = ~y, z = ~z, 
+                        marker = list(size = 1),color = ~class,colors = c("black", "mediumorchid1")) %>%
+  layout(title = "Sphere Dataset + SLS",showlegend = TRUE, legend = list(size=5, orientation = 'h')) 
+sphere.os.plot
+
+#Diagonostics
+sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)>1)
+sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)==1)
+sum(sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)<0.99)
+sqrt(syn$x*syn$x + syn$y*syn$y + syn$z*syn$z)
