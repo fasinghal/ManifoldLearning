@@ -2,7 +2,10 @@ library(smotefamily)
 library(plotly)
 
 #Swiss Roll
-swissroll<-read.table("http://people.cs.uchicago.edu/~dinoj/manifold/swissroll.dat")
+#swissroll<-read.table("http://people.cs.uchicago.edu/~dinoj/manifold/swissroll.dat")
+saveRDS(swissroll, file = "swissroll.rds")
+swissroll<-readRDS("./swissroll.rds")
+
 
 p<-plot_ly(swissroll, x = ~V1, y = ~V2, z = ~V3, 
   marker = list(size = 2, color='rgba(0, 0, 0, 1)')) %>%
@@ -12,7 +15,7 @@ p
 data<-swissroll
 data$class<-factor("Original")
 
-dbscan <- DBSMOTE(X = data[,-4],target = data$class,dupSize = 1)
+dbscan <- DBSMOTE(X = data[,-4],target = data$class,dupSize = 10)
 smote<-SMOTE(X = data[,-4], target = data$class, dup_size = 1)
 sls<- SLS(X =data[,-4], target=data$class, K = 5, C = 5,dupSize = 1)
 
@@ -21,7 +24,7 @@ syn<-dbscan$syn_data
 syn$class<-NULL
 syn$class<-factor("DBSMOTE")
 total<-rbind(data,syn)
-total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 3),color = ~class,colors = c("black", "red")) %>%
+total.plot<-plot_ly(data = total, x = ~V1, y = ~V2, z = ~V3,marker = list(size = 2),color = ~class,colors = c("black", "red")) %>%
   layout(title = "Swissroll Dataset + DBSMOTE",showlegend = TRUE, legend = list(size=5, orientation = 'h'))
 total.plot
 
